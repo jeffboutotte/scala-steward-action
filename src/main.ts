@@ -60,7 +60,7 @@ async function run(): Promise<void> {
 
     await coursier.install('scalafmt')
 
-    await coursier.launch('org.scala-steward', 'scala-steward-core_2.13', version, [
+    await coursier.launch('com.alejandrohdezma', 'scala-steward-core_2.13', version, [
       ['--workspace', `${workspaceDir}/workspace`],
       ['--repos-file', `${workspaceDir}/repos.md`],
       ['--git-ask-pass', `${workspaceDir}/askpass.sh`],

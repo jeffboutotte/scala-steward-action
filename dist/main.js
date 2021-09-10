@@ -5327,6 +5327,9 @@ async function run() {
         const signCommits = /true/i.test(core.getInput('sign-commits'));
         const ignoreOptionsFiles = /true/i.test(core.getInput('ignore-opts-files'));
         const githubApiUrl = core.getInput('github-api-url');
+        const defaultBranch = core.getInput('branch') ?
+            ['--default-branch', core.getInput('branch')] :
+            [];
         const scalafixMigrations = core.getInput('scalafix-migrations') ?
             ['--scalafix-migrations', core.getInput('scalafix-migrations')] :
             [];
@@ -5337,7 +5340,7 @@ async function run() {
             ['--github-app-id', githubAppInfo.id, '--github-app-key-file', githubAppInfo.keyFile] :
             [];
         await coursier.install('scalafmt');
-        await coursier.launch('org.scala-steward', 'scala-steward-core_2.13', version, [
+        await coursier.launch('com.alejandrohdezma', 'scala-steward-core_2.13', version, [
             ['--workspace', `${workspaceDir}/workspace`],
             ['--repos-file', `${workspaceDir}/repos.md`],
             ['--git-ask-pass', `${workspaceDir}/askpass.sh`],
@@ -5352,6 +5355,7 @@ async function run() {
             ['--cache-ttl', cacheTTL],
             scalafixMigrations,
             artifactMigrations,
+            defaultBranch,
             '--do-not-fork',
             '--disable-sandbox',
             githubAppArgs
